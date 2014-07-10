@@ -19,7 +19,7 @@ class tomcat::install {
     # tomcat::service definition.
     file {"/etc/init.d/tomcat${tomcat::version}":
       ensure  => file,
-      mode    => '0644',
+      mode    => '0755',
       require => Package["tomcat${tomcat::version}"],
     } ->
     service {"tomcat${tomcat::version}":
