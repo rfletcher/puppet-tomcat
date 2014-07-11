@@ -14,19 +14,6 @@ class tomcat::install {
     if $::osfamily == 'RedHat' {
       class {'::tomcat::install::redhat': }
     }
-
-    # Moved from Class[tomcat::service] to here so that we can create a
-    # tomcat::service definition.
-    file {"/etc/init.d/tomcat${tomcat::version}":
-      ensure  => file,
-      mode    => '0755',
-      require => Package["tomcat${tomcat::version}"],
-    } ->
-    service {"tomcat${tomcat::version}":
-      ensure => stopped,
-      enable => false,
-    }
-
   } else {
     class {'tomcat::source': }
   }
