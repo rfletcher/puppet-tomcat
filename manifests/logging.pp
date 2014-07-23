@@ -35,7 +35,7 @@ class tomcat::logging {
     }
   }
 
-  file {'/var/log/tomcat':
+  file {"/var/log/tomcat${::tomcat::version}":
     ensure => directory,
     owner  => 'tomcat',
     group  => 'tomcat',
