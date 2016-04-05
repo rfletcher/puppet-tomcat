@@ -2,7 +2,7 @@ class tomcat::juli::debian {
 
   $url =[
     $tomcat::sources_src,
-    "tomcat-${tomcat::version}",
+    "tomcat-${tomcat::major_version}",
     "v${tomcat::src_version}",
     'bin'
   ]
@@ -11,7 +11,7 @@ class tomcat::juli::debian {
 
   file { "${tomcat::home}/extras/":
     ensure  => directory,
-    require => Package["tomcat${tomcat::version}"],
+    require => Package["tomcat${tomcat::major_version}"],
   }
 
   archive::download { 'tomcat-juli.jar':

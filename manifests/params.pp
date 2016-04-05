@@ -1,6 +1,5 @@
 class tomcat::params {
-
-  $version = $::osfamily? {
+  $major_version = $::osfamily? {
     Debian => '6',
     RedHat => $::operatingsystemmajrelease ? {
       '5' => '5',
@@ -10,5 +9,4 @@ class tomcat::params {
 
   $instance_basedir = '/srv/tomcat'
   $sources_src = 'http://archive.apache.org/dist/tomcat/'
-
 }

@@ -1,5 +1,5 @@
 class tomcat (
-  $version          = $tomcat::params::version,
+  $version          = $tomcat::params::major_version,
   $sources          = false,
   $sources_src      = $tomcat::params::sources_src,
   $instance_basedir = $tomcat::params::instance_basedir,
@@ -8,27 +8,30 @@ class tomcat (
   $ulimits          = {},
 ) inherits ::tomcat::params {
 
-  validate_re($version, '^[5-7]([\.0-9]+)?$')
+  validate_re($version, '^[.+_0-9a-zA-Z:~-]+$')
   validate_bool($sources)
   validate_absolute_path($instance_basedir)
   validate_hash($ulimits)
+
+  $major_version = join(values_at(scanf($version, '%i'), 0), '')
 
   $type = $sources ? {
     true  => 'sources',
     false => 'package',
   }
 
-  $src_version = $version? {
-    5 => '5.5.27',
-    6 => '6.0.26',
-    7 => '7.0.42',
+  $src_version = $version ? {
+    5       => '5.5.27',
+    6       => '6.0.26',
+    7       => '7.0.42',
+    default => $version,
   }
 
   $home = $sources ? {
     true  => "/opt/apache-tomcat-${src_version}",
     false => $::osfamily? {
-      Debian => "/usr/share/tomcat${version}",
-      RedHat => "/var/lib/tomcat${version}",
+      Debian => "/usr/share/tomcat${major_version}",
+      RedHat => "/var/lib/tomcat${major_version}",
     }
   }
 
@@ -37,5 +40,4 @@ class tomcat (
   class {'tomcat::install': } ->
   class {'tomcat::user': } ->
   Class['tomcat']
-
 }

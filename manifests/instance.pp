@@ -147,7 +147,7 @@ define tomcat::instance(
   validate_absolute_path($_basedir)
 
   $version = $tomcat_version? {
-    false   => $tomcat::version,
+    false   => $tomcat::major_version,
     default => $tomcat_version,
   }
   validate_re($version, '^[5-7]([\.0-9]+)?$')

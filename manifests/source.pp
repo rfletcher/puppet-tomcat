@@ -67,7 +67,7 @@ class tomcat::source {
       file {"${::tomcat::home}/bin/catalina.sh":
         ensure  => present,
         source  => 'puppet:///modules/tomcat/catalina.sh-6.0.18',
-        require => Archive["apache-tomcat-${tomcat::version}"],
+        require => Archive["apache-tomcat-${tomcat::major_version}"],
         mode    => '0755',
       }
     }

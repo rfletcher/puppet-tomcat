@@ -9,7 +9,7 @@ class tomcat::logging {
 
   $conffile = "puppet:///modules/${module_name}/conf/log4j.rolling.properties"
 
-  $base_path = $::tomcat::version ? {
+  $base_path = $::tomcat::major_version ? {
     '5'     => "${::tomcat::home}/common/lib",
     default => "${::tomcat::home}/lib",
   }
@@ -35,10 +35,10 @@ class tomcat::logging {
     }
   }
 
-  file {"/var/log/tomcat${::tomcat::version}":
+  file {"/var/log/tomcat${::tomcat::major_version}":
     ensure => directory,
-    owner  => "tomcat${::tomcat::version}",
-    group  => "tomcat${::tomcat::version}",
+    owner  => "tomcat${::tomcat::major_version}",
+    group  => "tomcat${::tomcat::major_version}",
   }
 
   file {'commons-logging.jar':
