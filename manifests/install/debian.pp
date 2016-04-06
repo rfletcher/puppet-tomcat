@@ -5,12 +5,13 @@
 class tomcat::install::debian {
   if $::lsbdistcodename == 'precise' {
     ::apt::ppa { 'ppa:dirk-computer42/c42-backport': } ->
-    ::apt::pin { 'dirk-computer42-c42-backport-default':
-      originator => "LP-PPA-dirk-computer42-c42-backport",
-      packages   => "*",
-      priority   => 90,
+    ::apt::pin { [
+      'dirk-computer42-c42-backport-default',
+      'dirk-computer42-c42-backport-tomcat',
+    ]:
+      ensure => absent,
     } ->
-    ::apt::pin { 'dirk-computer42-c42-backport-tomcat':
+    ::apt::pin { '00-dirk-computer42-c42-backport-tomcat':
       originator => "LP-PPA-dirk-computer42-c42-backport",
       packages   => [
         "libservlet3.0-java-doc",
@@ -24,6 +25,11 @@ class tomcat::install::debian {
         "tomcat${tomcat::major_version}-user",
       ],
       priority   => 600,
+    } ->
+    ::apt::pin { '01-dirk-computer42-c42-backport-default':
+      originator => "LP-PPA-dirk-computer42-c42-backport",
+      packages   => "*",
+      priority   => 90,
     } ->
     Class['::apt::update'] ->
     Package["tomcat${tomcat::major_version}"]
